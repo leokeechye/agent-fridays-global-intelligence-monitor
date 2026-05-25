@@ -1,6 +1,9 @@
 const ALLOWED_ORIGIN_PATTERNS = [
   /^https:\/\/(.*\.)?worldmonitor\.app$/,
   /^https:\/\/worldmonitor-[a-z0-9-]+-elie-[a-z0-9]+\.vercel\.app$/,
+  // This fork's Vercel deployment (stable alias + per-deploy/preview URLs).
+  /^https:\/\/agent-fridays-global-intelligence-m\.vercel\.app$/,
+  /^https:\/\/agent-fridays-global-intelligence-monitor-[a-z0-9-]+\.vercel\.app$/,
   /^https?:\/\/localhost(:\d+)?$/,
   /^https?:\/\/127\.0\.0\.1(:\d+)?$/,
   /^https?:\/\/tauri\.localhost(:\d+)?$/,
