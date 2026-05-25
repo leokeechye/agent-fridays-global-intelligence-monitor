@@ -13,7 +13,7 @@ const http = require('http');
 const https = require('https');
 const zlib = require('zlib');
 const path = require('path');
-const { readFileSync } = require('fs');
+const { readFileSync, existsSync } = require('fs');
 const crypto = require('crypto');
 const { WebSocketServer, WebSocket } = require('ws');
 
@@ -142,8 +142,13 @@ const telegramState = {
 
 function loadTelegramChannels() {
   // Product-managed curated list lives in repo root under data/ (shared by web + desktop).
-  // Relay is executed from scripts/, so resolve ../data.
-  const p = path.join(__dirname, '..', 'data', 'telegram-channels.json');
+  // Relay runs from scripts/: in the repo that's ../data; in the scripts-rooted Railway
+  // deploy a copy is shipped at scripts/data/. Use whichever exists.
+  const candidates = [
+    path.join(__dirname, '..', 'data', 'telegram-channels.json'),
+    path.join(__dirname, 'data', 'telegram-channels.json'),
+  ];
+  const p = candidates.find((c) => existsSync(c)) || candidates[0];
   const set = String(process.env.TELEGRAM_CHANNEL_SET || 'full').toLowerCase();
   try {
     const raw = JSON.parse(readFileSync(p, 'utf8'));
@@ -205,7 +210,7 @@ async function initTelegramClientIfNeeded() {
 
   try {
     const { TelegramClient } = await import('telegram');
-    const { StringSession } = await import('telegram/sessions');
+    const { StringSession } = await import('telegram/sessions/index.js');
 
     const client = new TelegramClient(new StringSession(sessionStr), apiId, apiHash, {
       connectionRetries: 3,
