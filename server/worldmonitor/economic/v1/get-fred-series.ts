@@ -14,6 +14,7 @@ import type {
 } from '../../../../src/generated/server/worldmonitor/economic/v1/service_server';
 
 import { cachedFetchJson } from '../../../_shared/redis';
+import { CHROME_UA } from '../../../_shared/constants';
 
 const FRED_API_BASE = 'https://api.stlouisfed.org/fred';
 const REDIS_CACHE_KEY = 'economic:fred:v1';
@@ -43,11 +44,11 @@ async function fetchFredSeries(req: GetFredSeriesRequest): Promise<FredSeries | 
 
     const [obsResponse, metaResponse] = await Promise.all([
       fetch(`${FRED_API_BASE}/series/observations?${obsParams}`, {
-        headers: { Accept: 'application/json' },
+        headers: { Accept: 'application/json', 'User-Agent': CHROME_UA },
         signal: AbortSignal.timeout(10000),
       }),
       fetch(`${FRED_API_BASE}/series?${metaParams}`, {
-        headers: { Accept: 'application/json' },
+        headers: { Accept: 'application/json', 'User-Agent': CHROME_UA },
         signal: AbortSignal.timeout(10000),
       }),
     ]);
