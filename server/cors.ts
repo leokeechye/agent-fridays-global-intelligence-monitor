@@ -10,6 +10,9 @@ declare const process: { env: Record<string, string | undefined> };
 const PRODUCTION_PATTERNS: RegExp[] = [
   /^https:\/\/(.*\.)?worldmonitor\.app$/,
   /^https:\/\/worldmonitor-[a-z0-9-]+-elie-[a-z0-9]+\.vercel\.app$/,
+  // This fork's Vercel deployment (stable alias + per-deploy/preview URLs).
+  /^https:\/\/agent-fridays-global-intelligence-m\.vercel\.app$/,
+  /^https:\/\/agent-fridays-global-intelligence-monitor-[a-z0-9-]+\.vercel\.app$/,
   /^https?:\/\/tauri\.localhost(:\d+)?$/,
   /^https?:\/\/[a-z0-9-]+\.tauri\.localhost(:\d+)?$/i,
   /^tauri:\/\/localhost$/,
